@@ -1,102 +1,154 @@
-# 🧠 Aequatio — Arena de Cálculo Mental
+# Aequatio — Arena de Cálculo Mental
 
-Protótipo funcional de app pedagógico de cálculo mental rápido, com tema de
-"Esportes da Mente". Treine soma, subtração, multiplicação e divisão contra
-o relógio, e acompanhe sua evolução.
+Protótipo funcional de software educacional para desenvolvimento do cálculo mental rápido, inspirado no conceito de "Esportes da Mente". Treine soma, subtração, multiplicação e divisão contra o relógio e acompanhe sua evolução.
 
-- **Backend**: Python (Flask)
-- **Frontend**: HTML + Tailwind CSS (compilado, sem dependência de internet) + JavaScript puro
+* **Backend:** Python (Flask)
+* **Frontend:** HTML + Tailwind CSS (compilado, sem dependência de internet) + JavaScript puro
+
+## Objetivo Educacional
+
+O Aequatio foi desenvolvido para auxiliar estudantes no aprimoramento do cálculo mental por meio de atividades gamificadas. O sistema busca estimular o raciocínio lógico, a agilidade matemática e a prática contínua das quatro operações fundamentais, fornecendo feedback imediato sobre o desempenho do usuário.
 
 ## Como rodar
 
 ### 1. Clone o repositório
+
 ```bash
-git clone https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git
-cd NOME-DO-REPOSITORIO
+git clone https://github.com/b-arceno/aequatio.git
+cd aequatio
 ```
 
 ### 2. Instale as dependências
 
 **Linux / Mac:**
+
 ```bash
 pip3 install -r requirements.txt
 ```
-Se aparecer erro `externally-managed-environment` (comum em Ubuntu/Debian
-recentes):
+
+Se aparecer o erro `externally-managed-environment` (comum em versões recentes do Ubuntu e Debian):
+
 ```bash
 pip3 install -r requirements.txt --break-system-packages
 ```
 
-**Windows** (no Prompt de Comando ou PowerShell):
+**Windows** (Prompt de Comando ou PowerShell):
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Rode o servidor
+### 3. Execute o servidor
 
 **Linux / Mac:**
+
 ```bash
 python3 app.py
 ```
 
 **Windows:**
+
 ```bash
 python app.py
 ```
 
-Você deve ver no terminal:
-```
+Você deverá visualizar no terminal:
+
+```text
  * Running on http://127.0.0.1:5000
 ```
 
-### 4. Jogue
+### 4. Acesse o sistema
+
 Abra o navegador em:
-```
+
+```text
 http://localhost:5000
 ```
 
-**Importante:** não abra o `index.html` direto pelo Explorer/Finder — o jogo
-precisa do servidor Python rodando para gerar e validar as questões. Sempre
-acesse pelo endereço acima, com o terminal aberto.
+> **Importante:** não abra o arquivo `index.html` diretamente pelo Explorer, Finder ou gerenciador de arquivos do sistema operacional. O Aequatio depende do servidor Python em execução para gerar e validar as questões matemáticas. Sempre acesse a aplicação pelo endereço acima, mantendo o terminal aberto.
 
 ## Estrutura do projeto
 
-```
+```text
 .
-├── app.py              # servidor Flask (API + serve o frontend)
-├── index.html           # interface completa (SPA), com CSS já embutido
-├── requirements.txt      # dependências Python
+├── app.py            # servidor Flask (API + frontend)
+├── index.html        # interface completa (SPA), com CSS embutido
+├── requirements.txt  # dependências Python
 └── README.md
 ```
 
 ## API
 
-- `POST /gerar-questao` → recebe `{operador, dificuldade}`, retorna
-  `{question_id, pergunta, operador_aplicado}`.
-- `POST /validar-resposta` → recebe `{question_id, resposta_usuario,
-  acertos_rodada, total_rodada}`, retorna `{correta, resposta_certa,
-  frase}`.
+### POST /gerar-questao
 
-A resposta correta de cada questão fica guardada em memória no servidor,
-nunca é enviada ao navegador antes da validação — evita que a resposta seja
-"lida" inspecionando o código do navegador.
+Recebe:
+
+```json
+{
+  "operador": "+",
+  "dificuldade": "iniciante"
+}
+```
+
+Retorna:
+
+```json
+{
+  "question_id": "abc123",
+  "pergunta": "8 + 7",
+  "operador_aplicado": "+"
+}
+```
+
+### POST /validar-resposta
+
+Recebe:
+
+```json
+{
+  "question_id": "abc123",
+  "resposta_usuario": 15,
+  "acertos_rodada": 3,
+  "total_rodada": 4
+}
+```
+
+Retorna:
+
+```json
+{
+  "correta": true,
+  "resposta_certa": 15,
+  "frase": "Excelente!"
+}
+```
+
+A resposta correta de cada questão é armazenada temporariamente no servidor e não é enviada ao navegador antes da validação da resposta do usuário. Dessa forma, evita-se o acesso antecipado à solução por meio da inspeção do código da aplicação.
 
 ## Funcionalidades
 
-- **Academia de Técnicas** — truques de cálculo mental para os 4 operadores.
-- **Arena de Competição** — escolha operador, dificuldade (Iniciante /
-  Intermediário / Avançado) e velocidade (Sem tempo / 10s / 5s / 3s), e
-  responda 10 questões em sequência com timer visual regressivo.
-- **Painel de Evolução** — histórico de rodadas, taxa de acerto geral e
-  melhor tempo médio, salvos localmente no navegador (`localStorage`).
-
-Totalmente responsivo: layout em sidebar no desktop/tablet, e barra de
-navegação fixa no rodapé (estilo app nativo) em celulares.
+* **Academia de Técnicas** — apresenta estratégias e truques de cálculo mental para as quatro operações fundamentais.
+* **Arena de Competição** — permite escolher operador matemático, nível de dificuldade (Iniciante, Intermediário ou Avançado) e velocidade (Sem tempo, 10s, 5s ou 3s), respondendo a uma sequência de 10 questões com temporizador regressivo.
+* **Painel de Evolução** — exibe histórico de partidas, percentual geral de acertos e melhor desempenho médio, armazenados localmente no navegador por meio do `localStorage`.
+* **Interface Responsiva** — adaptação automática para computadores, tablets e smartphones, utilizando barra lateral em telas maiores e navegação fixa no rodapé em dispositivos móveis.
 
 ## Notas técnicas
 
-- O CSS do Tailwind vem **compilado e embutido** no próprio `index.html`
-  (não depende de CDN externo), então o app funciona normalmente mesmo sem
-  internet ou atrás de firewalls restritivos.
-- Sem banco de dados — o histórico fica no navegador de cada pessoa. Cada
-  colega que testar terá seu próprio histórico, separado.
+* O Tailwind CSS é compilado e incorporado diretamente ao arquivo `index.html`, eliminando a dependência de CDNs ou conexões externas.
+* O sistema funciona normalmente sem acesso à internet após sua instalação local.
+* Não utiliza banco de dados. As informações de desempenho são armazenadas localmente no navegador por meio do `localStorage`, permitindo que cada usuário mantenha seu próprio histórico de utilização.
+* A aplicação adota uma arquitetura simples cliente-servidor, em que o frontend se comunica com o backend Flask por meio de requisições HTTP.
+
+## Tecnologias utilizadas
+
+* Python
+* Flask
+* HTML5
+* Tailwind CSS
+* JavaScript
+* LocalStorage (armazenamento local do navegador)
+
+## Licença
+
+Este projeto foi desenvolvido exclusivamente para fins educacionais.
