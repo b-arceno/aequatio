@@ -33,16 +33,13 @@ def liberar_cors(response):
     response.headers["Access-Control-Allow-Headers"] = "Content-Type"
     return response
 
-
 @app.route("/gerar-questao", methods=["OPTIONS"])
 @app.route("/validar-resposta", methods=["OPTIONS"])
 def preflight_cors():
     return "", 204
 
 
-# ---------------------------------------------------------------------------
 # CONFIGURAÇÃO DE DIFICULDADE
-# ---------------------------------------------------------------------------
 # Iniciante:     1 dígito  (1-9)      operando com 1 dígito  (1-9)
 # Intermediário: 2 dígitos (10-99)    operando com 1 dígito  (1-9)
 # Avançado:      2-3 dígitos (10-999) operando com 2-3 dígitos (10-999)
@@ -81,9 +78,7 @@ FRASES_ERRO = [
 ]
 
 
-# ---------------------------------------------------------------------------
 # LÓGICA DE GERAÇÃO DE QUESTÕES
-# ---------------------------------------------------------------------------
 def _gerar_operandos(dificuldade: str):
     """Retorna (a, b) dentro do range configurado para a dificuldade."""
     cfg = RANGES.get(dificuldade, RANGES["iniciante"])
@@ -171,9 +166,7 @@ def gerar_questao(operador: str, dificuldade: str):
     return pergunta, resposta, operador_real
 
 
-# ---------------------------------------------------------------------------
 # "BANCO" DE QUESTÕES EM MEMÓRIA
-# ---------------------------------------------------------------------------
 # Como o cálculo da resposta certa não pode ser confiado ao cliente (o usuário
 # poderia inspecionar o JS e trapacear), guardamos a resposta correta no
 # servidor, associada a um question_id, e só validamos contra esse cache.
@@ -188,9 +181,7 @@ def _novo_question_id():
     return qid
 
 
-# ---------------------------------------------------------------------------
 # ROTAS
-# ---------------------------------------------------------------------------
 @app.route("/")
 def index():
     return send_from_directory(".", "index.html")
