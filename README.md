@@ -1,6 +1,6 @@
 # Aequatio — Arena de Cálculo Mental
 
-Protótipo funcional de software educacional para desenvolvimento do cálculo mental rápido, inspirado no conceito de "Esportes da Mente". Treine soma, subtração, multiplicação e divisão contra o relógio e acompanhe sua evolução.
+Software educacional para desenvolvimento do cálculo mental rápido por meio de atividades gamificadas. Treine soma, subtração, multiplicação e divisão contra o relógio e acompanhe sua evolução.
 
 * **Backend:** Python (Flask)
 * **Frontend:** HTML + Tailwind CSS (compilado, sem dependência de internet) + JavaScript puro
@@ -152,3 +152,6 @@ A resposta correta de cada questão é armazenada temporariamente no servidor e 
 ## Licença
 
 Este projeto foi desenvolvido exclusivamente para fins educacionais.
+
+## Demonstração online:
+https://aequatio.onrender.com
